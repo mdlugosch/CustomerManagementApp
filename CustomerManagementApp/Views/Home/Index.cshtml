@@ -1,0 +1,107 @@
+﻿@*Hauptübersicht der Datenbankeinträge. Ich habe mich dazu entschieden die Dienstleistungen
+hierbei nicht anzuzeigen und diese stattdessen in einer eigenen Übersicht (ServiceDetails)
+für den jeweiligen Vertrag anzuziegen.*@
+
+@model IEnumerable<Customer>
+
+@{ decimal total = 0m; }
+
+<table class="table table-sm table-bordered">
+    <thead>
+        <tr class="p-2 bg-primary text-white text-center table-borderless">
+            <td colspan="6">
+                <h3>Kundenübersicht</h3>
+            </td>
+            <td align="right">
+                <form>
+                    <h3>
+                        <button type="submit" asp-action="EditCustomer" formmethod="post" asp-route-key="0" class="btn btn-sm btn-success">
+                            Kunde hinzufügen
+                        </button>
+                    </h3>
+                </form>
+            </td>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (Customer c in Model)
+        {
+            <tr bgcolor="#D3D3D3">
+                <td colspan="6"><h5><b>@c.CompanyName</b></h5></td>
+                <td>
+                    <form>
+                        <input type="hidden" name="CustomerId" value="@c.CustomerId" />
+                        <button type="submit" asp-action="SoftDeleteCustomer" formmethod="post"
+                                class="btn btn-sm btn-danger">
+                            Löschen
+                        </button>
+
+                        <button type="submit" asp-action="EditCustomer" formmethod="post" class="btn btn-sm btn-warning">Bearbeiten</button>
+
+                        <button type="submit" asp-action="EditContract" formmethod="post" class="btn btn-sm btn-success">
+                            Vertrag hinzufügen
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            @if (c.Contracts != null && c.Contracts.Count() > 0)
+            {
+                <tr>
+                    <th width="10">Vertrag</th>
+                    <th width="20">Startdatum</th>
+                    <th width="20">Endedatum</th>
+                    <th width="150">Einkaufspreis</th>
+                    <th width="150">Verkaufspreis</th>
+                    <th width="150">Gewinn</th>
+                    <th>Options</th>
+                </tr>
+                @foreach (Contract v in c.Contracts)
+                {
+                    total = total + v.Profit;
+
+                    <tr>
+                        <td></td>
+                        <td>@(v.Startdate.HasValue && @v.Startdate.Value != DateTime.MinValue ? @v.Startdate.Value.ToString("dd. MM. yyyy") : "- N/A -")</td>
+                        <td>@(v.Enddate.HasValue && @v.Enddate.Value != DateTime.MinValue ? @v.Enddate.Value.ToString("dd. MM. yyyy") : "ausstehend")</td>
+                        <td align="right">@(v.PurchasePrice.ToString("F2") + " €")</td>
+                        <td align="right">@(v.RetailPrice.ToString("F2") + " €")</td>
+                        <td align="right">@(v.Profit.ToString("F2") + " €")</td>
+                        <td>
+                            <form>
+                                <input type="hidden" name="CompanyName" value="@c.CompanyName" />
+                                <input type="hidden" name="Startdate" value="@v.Startdate" />
+                                <input type="hidden" name="ContractId" value="@v.ContractId" />
+                                <button type="submit" asp-action="ServiceDetails" formmethod="post"
+                                        class="btn btn-sm btn-primary">
+                                    Vertragsdetails
+                                </button>
+                                <button type="submit" asp-action="SoftDeleteContract" formmethod="post"
+                                        class="btn btn-sm btn-danger">
+                                    Löschen
+                                </button>
+                                <button type="submit" asp-action="EditContract" formmethod="post" class="btn btn-sm btn-warning">Bearbeiten</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td align="right"><b>Gesamt:</b></td>
+                    <td width="150" align="right"><b>@(total.ToString("F2") + " €")</b></td>
+                    <td></td>
+                </tr>
+                total = 0m;
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7"><b>Keine Verträge vorhanden</b></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

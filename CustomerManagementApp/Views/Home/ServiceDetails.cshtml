@@ -1,0 +1,54 @@
+﻿@*
+    ServiceDetails ist eine Übersicht zu den Dienstleistungen des jeweiligen Vertrags.
+    Zugang dazu erhält man über die Hauptübersicht(Index) indem man auf einen Vertrag-
+    detailsbutton klickt.
+*@
+
+@model IEnumerable<Service>
+
+<h3 class="p-2 bg-primary text-white text-center">Leistung</h3>
+
+<table class="table table-sm table-bordered">
+    <thead>
+        <tr bgcolor="#D3D3D3">
+            <td><b>@(ViewBag.CompanyName + " Vertrag vom: " + ViewBag.Startdate.ToString("dd. MM. yyyy"))</b></td>
+            <td>
+                <form>
+                    <a class="btn btn-sm btn-primary" asp-action="Index">Zurück zur Übersicht</a>
+                    <button type="submit" asp-action="EditService" formmethod="post" class="btn btn-sm btn-success">
+                        Dienstleistung hinzufügen
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count() > 0)
+        {
+            @foreach (Service s in Model)
+            {
+                <tr>
+                    <td><p style="width:400px;">@s.ServiceDescription</p></td>
+                    <td>
+                        <form>
+                            <input type="hidden" name="ContractId" value="@s.ContractId" />
+                            <input type="hidden" name="ServiceId" value="@s.ServiceId" />
+
+                            <button type="submit" asp-action="SoftDeleteService" formmethod="post"
+                                    class="btn btn-sm btn-danger">
+                                Löschen
+                            </button>
+                            <button type="submit" asp-action="EditService" formmethod="post" class="btn btn-sm btn-warning">Bearbeiten</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td><h5><b>Keine Dinestleistungen vorhanden</b></h5></td>
+            </tr>
+        }
+    </tbody>
+</table>

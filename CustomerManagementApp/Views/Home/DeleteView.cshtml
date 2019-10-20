@@ -1,0 +1,130 @@
+﻿@*Die Kundenverwaltung bietet eine Softdeletefunktion an. Daten die gelöscht werden
+werden zunächst nur zum löschen markiert. Im "Papierkorb" (DeleteView) können diese
+dann wiederhergestellt oder permanent gelöscht werden.*@
+
+@model DeleteList
+
+<h3 class="p-2 bg-primary text-white text-center">Papierkorb</h3>
+
+<table class="table table-sm table-bordered">
+    <tbody>
+        @if (Model.Customers != null && Model.Customers.Count() > 0)
+        {
+            <tr bgcolor="#D3D3D3">
+                <th width="200"><h5><b>Firmennamen</b></h5></th>
+                <th></th>
+            </tr>
+            @foreach (Customer c in Model.Customers)
+            {
+                <tr>
+                    <td>@c.CompanyName</td>
+                    <td>
+                        <form>
+                            <input type="hidden" name="CustomerId" value="@c.CustomerId" />
+                            <button asp-action="RestoreCustomer" formmethod="post" class="btn btn-sm btn-success">
+                                Wiederherstellen
+                            </button>
+                            <button type="submit" asp-action="RemoveCustomer" formmethod="post"
+                                    class="btn btn-sm btn-danger">
+                                Löschen
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr bgcolor="#D3D3D3">
+                <th width="200"><h5><b>Keine Kundendaten im Papierkorb</b></h5></th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table class="table table-sm table-bordered">
+    <tbody>
+        @if (Model.Contracts != null && Model.Contracts.Count() > 0)
+        {
+            <tr bgcolor="#D3D3D3">
+                <th width="200"><h5><b>Firma</b></h5></th>
+                <th width="20"><h5><b>Startdatum</b></h5></th>
+                <th width="150"><h5><b>Endedatum</b></h5></th>
+                <th width="150"><h5><b>Einkaufspreis</b></h5></th>
+                <th width="150"><h5><b>Verkaufspreis</b></h5></th>
+                <th></th>
+            </tr>
+            @foreach (Contract v in Model.Contracts)
+            {
+                <tr>
+                    <td>@v.CompanyName</td>
+                    <td>@(v.Startdate.HasValue && @v.Startdate.Value != DateTime.MinValue ? @v.Startdate.Value.ToString("dd. MM. yyyy") : "- N/A -")</td>
+                    <td>@(v.Enddate.HasValue && @v.Enddate.Value != DateTime.MinValue ? @v.Enddate.Value.ToString("dd. MM. yyyy") : "ausstehend")</td>
+                    <td align="right">@(v.PurchasePrice.ToString("F2") + " €")</td>
+                    <td align="right">@(v.RetailPrice.ToString("F2") + " €")</td>
+                    <td>
+                        <form>
+                            <input type="hidden" name="ContractId" value="@v.ContractId" />
+                            <button asp-action="RestoreContract" class="btn btn-sm btn-success" formmethod="post">
+                                Wiederherstellen
+                            </button>
+                            <button type="submit" asp-action="RemoveContract" formmethod="post"
+                                    class="btn btn-sm btn-danger">
+                                Löschen
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr bgcolor="#D3D3D3">
+                <th width="200"><h5><b>Keine Vertragsdaten im Papierkorb</b></h5></th>
+            </tr>
+        }
+</tbody>
+</table>
+
+<table class="table table-sm table-bordered">
+    <tbody>
+        @if (Model.Services != null && Model.Services.Count() > 0)
+        {
+            <tr bgcolor="#D3D3D3">
+                <th width="200"><h5><b>Firma</h5></th>
+                <th width="20"><h5><b>Startdatum</h5></th>
+                <th><h5><b>Leistung</h5></th>
+                <th></th>
+            </tr>
+            @foreach (Service s in Model.Services)
+            {
+                <tr>
+                    <td>@s.CompanyName</td>
+                    <td>@(s.Startdate.HasValue && @s.Startdate.Value != DateTime.MinValue ? @s.Startdate.Value.ToString("dd. MM. yyyy") : "- N/A -")</td>
+                    <td width="400"><p style="width:400px;">@s.ServiceDescription</p></td>
+                    <td>
+                        <form>
+                            <input type="hidden" name="ServiceId" value="@s.ServiceId" />
+                            <button asp-action="RestoreService" class="btn btn-sm btn-success" formmethod="post">
+                                Wiederherstellen
+                            </button>
+                            <button type="submit" asp-action="RemoveService" formmethod="post"
+                                    class="btn btn-sm btn-danger">
+                                Löschen
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr bgcolor="#D3D3D3">
+                <th width="200"><h5><b>Keine Dienstleistungsdaten im Papierkorb</b></h5></th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

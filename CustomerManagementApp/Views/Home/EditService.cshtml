@@ -1,0 +1,44 @@
+﻿@model Service
+
+<h3 class="p-2 bg-primary text-white text-center">Eingabemaske - Dienstleistung</h3>
+
+<form asp-action="UpdateService" method="post">
+    <input type="hidden" name="Startdate" value="@ViewBag.Startdate" />
+    <input type="hidden" name="CompanyName" value="@ViewBag.CompanyName" />
+    @*Originalwert übertragen zum Aktualisierungsabgleich*@
+    <input name="original.ServiceId" value="@Model?.ServiceId" type="hidden" />
+    <input name="original.ContractId" value="@Model?.ContractId" type="hidden" />
+    <input name="original.ServiceDescription" value="@Model?.ServiceDescription" type="hidden" />
+    <input name="original.SoftDeleted" value="@Model?.SoftDeleted" type="hidden" />
+
+    @*ServiceId wird bei einem geänderten Objekt leer übertragen. Daher muss man die ServiceId nochmal als Hiddenfeld übertragen*@
+    <input type="hidden" asp-for="ServiceId" />
+
+    <label class="form-control-label" asp-for="ContractId">Vertrag</label>
+    <div class="form-group">
+        <div>
+            <select name="ContractId">
+                @foreach (var ContractItem in ViewData["ContractItems"] as List<KeyValuePair<long, string>>)
+                {
+                    if (ContractItem.Key == Model.ContractId)
+                    {
+                        <option selected value="@ContractItem.Key">@ContractItem.Value</option>
+                    }
+                    else
+                    {
+                        <option value="@ContractItem.Key">@ContractItem.Value</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <label class="form-control-label" asp-for="ServiceDescription">Leistung</label>
+        <input class="form-control" asp-for="ServiceDescription" />
+        @Html.ValidationMessage("ServiceDescription", "", new { @class = "text-danger" })
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Speichern</button>
+        <button type="submit" class="btn btn-secondary" asp-action="BackToServiceDetails">Abbrechen</button>
+    </div>
+</form>

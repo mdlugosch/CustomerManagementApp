@@ -1,0 +1,30 @@
+﻿@*Bei einem fehlgeschlagenen Validierungsversuch wird man zu dieser
+View zurück geführt. Da bei der Rückführung nicht auf die Controller-
+methode EditCustomer zurückgegriffen wird bleiben die Eingabefelder
+leer obwohl im Model die alten Daten vorhanden sind. Mit "value" können
+die Daten jedoch als Defaultwert nach eine Rückführung in die Eingabefelder
+zurückgeschrieben werden.*@
+
+@model Customer
+@*@ViewData.ModelState.IsValid*@
+
+<h3 class="p-2 bg-primary text-white text-center">Eingabemaske - Kunde</h3>
+
+<form asp-action="UpdateCustomer" method="post">
+    @*Originalwert übertragen zum Aktualisierungsabgleich*@
+    <input name="original.CustomerId" value="@Model?.CustomerId" type="hidden" />
+    <input name="original.CompanyName" value="@Model?.CompanyName" type="hidden" />
+    <input name="original.SoftDeleted" value="@Model?.SoftDeleted" type="hidden" />
+    <input name="original.Contracts" value="@Model?.Contracts" type="hidden" />
+    <input type="hidden" asp-for="CustomerId" />
+    <div class="form-group">
+        <label class="form-control-label" asp-for="CompanyName">Firma</label>
+        <input class="form-control" asp-for="CompanyName" value="@Model.CompanyName" />
+        @Html.ValidationMessage("CompanyName", "", new { @class = "text-danger" })
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Speichern</button>
+        <a class="btn btn-secondary" asp-action="Index">Abbrechen</a>
+    </div>
+</form>

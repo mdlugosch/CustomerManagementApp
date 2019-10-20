@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Customer>
+
+<h3 class="p-2 bg-primary text-white text-center">Seed Data</h3>
+
+<form method="post">
+    <div class="text-center">
+        <button type="submit" asp-action="CreateSeedData" class="btn btn-primary">
+            Seed Database
+        </button>
+        <button asp-action="ClearData" class="btn btn-danger">
+            Clear Database
+        </button>
+    </div>
+</form>
+<table class="table table-sm table-bordered">
+    <tbody>
+        @foreach (Customer c in Model)
+        {
+            <tr bgcolor="#D3D3D3">
+                <td><h5><b>@c.CustomerId</b></h5></td>
+                <td colspan="6"><h5><b>@c.CompanyName</b></h5></td>
+            </tr>
+            @if (c.Contracts != null && c.Contracts.Count() > 0)
+            {
+                @foreach (Contract v in c.Contracts)
+                {
+                    <tr>
+                        <th>Vertrag</th>
+                        <th>Id</th>
+                        <th>Startdatum</th>
+                        <th>Endedatum</th>
+                        <th>Einkaufspreis</th>
+                        <th>Verkaufspreis</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>@v.ContractId</td>
+                        <td width="20">@(v.Startdate.HasValue && @v.Startdate.Value != DateTime.MinValue ? @v.Startdate.Value.ToString("dd. MM. yyyy") : "- N/A -")</td>
+                        <td width="20">@(v.Enddate.HasValue && @v.Enddate.Value != DateTime.MinValue ? @v.Enddate.Value.ToString("dd. MM. yyyy") : "- N/A -")</td>
+                        <td width="20">@(v.PurchasePrice.ToString("F2") + " €")</td>
+                        <td>@(v.RetailPrice.ToString("F2") + " €")</td>
+                    </tr>
+                    @if (v.Services != null && v.Services.Count() > 0)
+                    {
+                        <tr>
+                            <th width="20"></th>
+                            <th width="20"></th>
+                            <th width="20">Id</th>
+                            <th>Leistung</th>
+                        </tr>
+                        @foreach (Service s in v.Services)
+                        {
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>@s.ServiceId</td>
+                                <td colspan="4">@s.ServiceDescription</td>
+                            </tr>
+                        }
+                    }
+                }
+                <tr></tr>
+            }
+        }
+    </tbody>
+</table>
