@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CustomerManagementApp.Models.Pages;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace CustomerManagementApp.Models
 {
     public interface IDataRepository
     {
-        IEnumerable<Customer> GetAllData();
+        PagedList<Customer> GetAllData(QueryOptions options);
         IEnumerable<Customer> GetAllCustomers();
         Customer GetCustomerById(long customerId, bool ignoreQueryFilter = false);
         Contract GetContractById(long contractId, bool ignoreQueryFilter = false);
@@ -47,9 +48,9 @@ namespace CustomerManagementApp.Models
             return context.Customers.OrderBy(c => c.CustomerId).Include(v => v.Contracts);
         }
 
-        public IEnumerable<Customer> GetAllData()
+        public PagedList<Customer> GetAllData(QueryOptions options)
         {
-            return context.Customers.IgnoreQueryFilters().OrderBy(c => c.CustomerId).Include(v => v.Contracts).ThenInclude(s => s.Services).IgnoreQueryFilters();
+            return new PagedList<Customer>(context.Customers.IgnoreQueryFilters().OrderBy(c => c.CustomerId).Include(v => v.Contracts).ThenInclude(s => s.Services).IgnoreQueryFilters(), options);
         }
 
         #region GetItemById

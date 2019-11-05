@@ -12,6 +12,11 @@
         </button>
     </div>
 </form>
+
+<div class="text-center">
+    @Html.Partial("Pages", Model)
+</div>
+
 <table class="table table-sm table-bordered">
     <tbody>
         @foreach (Customer c in Model)

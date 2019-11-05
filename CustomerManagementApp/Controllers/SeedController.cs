@@ -1,4 +1,5 @@
 ﻿using CustomerManagementApp.Models;
+using CustomerManagementApp.Models.Pages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,9 +18,9 @@ namespace CustomerManagementApp.Controllers
             repository = repo;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(QueryOptions options)
         {
-            return View(repository.GetAllData());
+            return View(repository.GetAllData(options));
         }
 
         [HttpPost]
