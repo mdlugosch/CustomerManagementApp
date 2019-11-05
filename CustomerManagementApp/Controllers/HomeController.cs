@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Globalization;
+using CustomerManagementApp.Models.Pages;
 
 namespace CustomerManagementApp.Controllers
 {
@@ -22,7 +23,7 @@ namespace CustomerManagementApp.Controllers
         }
 
         #region Controllermethoden Datenübersicht
-        public IActionResult Index() => View(repository.GetAllCustomers());
+        public IActionResult Index(QueryOptions options) => View(repository.GetAllCustomers(options));
 
         /*
          * ServiceDetails fällt aus dem Rahmen der Namensgebung. Wie bei Index handelt es sich um eine

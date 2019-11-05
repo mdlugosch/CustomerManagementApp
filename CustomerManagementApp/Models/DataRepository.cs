@@ -10,7 +10,7 @@ namespace CustomerManagementApp.Models
     public interface IDataRepository
     {
         PagedList<Customer> GetAllData(QueryOptions options);
-        IEnumerable<Customer> GetAllCustomers();
+        PagedList<Customer> GetAllCustomers(QueryOptions options);
         Customer GetCustomerById(long customerId, bool ignoreQueryFilter = false);
         Contract GetContractById(long contractId, bool ignoreQueryFilter = false);
         Service GetServiceById(long serviceId, bool ignoreQueryFilter = false);
@@ -43,9 +43,9 @@ namespace CustomerManagementApp.Models
             context = ctx;
         }
 
-        public IEnumerable<Customer> GetAllCustomers()
+        public PagedList<Customer> GetAllCustomers(QueryOptions options)
         {
-            return context.Customers.OrderBy(c => c.CustomerId).Include(v => v.Contracts);
+            return new PagedList<Customer>(context.Customers.OrderBy(c => c.CustomerId).Include(v => v.Contracts), options);
         }
 
         public PagedList<Customer> GetAllData(QueryOptions options)

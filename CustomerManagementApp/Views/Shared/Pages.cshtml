@@ -1,5 +1,4 @@
 ﻿<form id="pageform" method="get" class="form-inline d-inline-block">
-
     <button name="options.currentPage" value="@(Model.CurrentPage - 1)"
             class="btn btn-outline-primary"
             @(!Model.HasPreviousPage ? "disabled" : "")
@@ -8,12 +7,12 @@
     </button>
 
     @for (int i = 1; i <= 3 && i <= Model.TotalPages; i++)
-        {
-            <button name="options.currentPage" value="@i" type="submit"
-                    class="btn btn-outline-primary @(Model.CurrentPage == i ? "active" : "")">
-                @i
-            </button>
-        }
+    {
+        <button name="options.currentPage" value="@i" type="submit"
+                class="btn btn-outline-primary @(Model.CurrentPage == i ? "active" : "")">
+            @i
+        </button>
+    }
 
     @if (Model.CurrentPage > 3 && Model.TotalPages - Model.CurrentPage >= 3)
     {
