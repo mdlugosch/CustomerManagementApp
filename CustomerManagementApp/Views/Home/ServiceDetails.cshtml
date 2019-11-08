@@ -6,6 +6,18 @@
 
 @model IEnumerable<Service>
 
+@*
+Da ServiceDetails eine Unterseite des HomeControllers ist muss ich
+in ViewBag.ControllerAction die Controllermethode angeben. Der Parameter
+wird wiederum in der Paginationkomponente (Partial-View) verwendet damit
+diese zur richtigen Controllermethode posted. Ich habe hier einen ViewBag
+Parameter genommen damit in PartialView die Controller Methode nicht hatcodiert
+eingetragen werden muss.
+*@
+@{
+    ViewBag.ControllerAction = "ServiceDetails";
+}
+
 <h3 class="p-2 bg-primary text-white text-center">Leistung</h3>
 
 <table class="table table-sm table-bordered">
@@ -21,6 +33,13 @@
                 </form>
             </td>
         </tr>
+        <tr class="p-2 table-borderless">
+            <td>
+                <div>
+                    @Html.Partial("PostPages", Model)
+                </div>
+            </td>
+        </tr>
     </thead>
     <tbody>
         @if (Model != null && Model.Count() > 0)
@@ -30,15 +49,16 @@
                 <tr>
                     <td><p style="width:400px;">@s.ServiceDescription</p></td>
                     <td>
-                        <form>
+                        <form method="post">
                             <input type="hidden" name="ContractId" value="@s.ContractId" />
                             <input type="hidden" name="ServiceId" value="@s.ServiceId" />
-
-                            <button type="submit" asp-action="SoftDeleteService" formmethod="post"
+                            @*formmethod="post"*@
+                            <button type="submit" asp-action="SoftDeleteService"
                                     class="btn btn-sm btn-danger">
                                 Löschen
                             </button>
-                            <button type="submit" asp-action="EditService" formmethod="post" class="btn btn-sm btn-warning">Bearbeiten</button>
+                            @*formmethod="post"*@
+                            <button type="submit" asp-action="EditService" class="btn btn-sm btn-warning">Bearbeiten</button>
                         </form>
                     </td>
                 </tr>

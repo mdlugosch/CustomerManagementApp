@@ -1,6 +1,8 @@
-﻿@*Hauptübersicht der Datenbankeinträge. Ich habe mich dazu entschieden die Dienstleistungen
+﻿@*  
+    Hauptübersicht der Datenbankeinträge. Ich habe mich dazu entschieden die Dienstleistungen
     hierbei nicht anzuzeigen und diese stattdessen in einer eigenen Übersicht (ServiceDetails)
-    für den jeweiligen Vertrag anzuziegen.*@
+    für den jeweiligen Vertrag anzuziegen.
+*@
 
 @model IEnumerable<Customer>
 
@@ -25,7 +27,7 @@
         <tr class="p-2 text-center table-borderless">
             <td colspan="6">
                 <div>
-                    @Html.Partial("Pages", Model)
+                    @Html.Partial("GetPages", Model)
                 </div>
             </td>
         </tr>

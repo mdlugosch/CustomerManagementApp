@@ -11,6 +11,8 @@ namespace CustomerManagementApp.Models
     {
         PagedList<Customer> GetAllData(QueryOptions options);
         PagedList<Customer> GetAllCustomers(QueryOptions options);
+        PagedList<Service> GetAllServicesFromContract(long contractId, QueryOptions options);
+
         Customer GetCustomerById(long customerId, bool ignoreQueryFilter = false);
         Contract GetContractById(long contractId, bool ignoreQueryFilter = false);
         Service GetServiceById(long serviceId, bool ignoreQueryFilter = false);
@@ -25,7 +27,9 @@ namespace CustomerManagementApp.Models
         void AddCustomer(Customer customer);
         void AddContract(Contract contract);
         void AddService(Service service);
-        IEnumerable<Service> GetAllServicesFromContract(long contractId);
+
+        //IEnumerable<Service> GetAllServicesFromContract(long contractId);
+
         List<KeyValuePair<long, string>> CustomerList();
         List<KeyValuePair<long, string>> ContractList();
         DeleteList CreateDeleteList();
@@ -93,9 +97,15 @@ namespace CustomerManagementApp.Models
                 return context.Contracts.Where(v => v.CustomerId == customerId).Include(v => v.Services);
         }
 
-        public IEnumerable<Service> GetAllServicesFromContract(long contractId)
+        // alte Version
+        //public IEnumerable<Service> GetAllServicesFromContract(long contractId)
+        //{
+        //    return context.Services.Where(s => s.ContractId == contractId);
+        //}
+
+        public PagedList<Service> GetAllServicesFromContract(long contractId, QueryOptions options)
         {
-            return context.Services.Where(s => s.ContractId == contractId);
+            return new PagedList<Service>(context.Services.Where(s => s.ContractId == contractId), options);
         }
 
         #region Neue Objekte hinzufügen

@@ -1,21 +1,31 @@
 ﻿@model IEnumerable<Customer>
 
-<h3 class="p-2 bg-primary text-white text-center">Seed Data</h3>
-
-<form method="post">
-    <div class="text-center">
-        <button type="submit" asp-action="CreateSeedData" class="btn btn-primary">
-            Seed Database
-        </button>
-        <button asp-action="ClearData" class="btn btn-danger">
-            Clear Database
-        </button>
-    </div>
-</form>
-
-<div class="text-center">
-    @Html.Partial("Pages", Model)
-</div>
+<table class="table table-sm table-borderless">
+    <tr class="bg-primary text-white text-center table-borderless">
+        <td colspan="2">
+            <h3>Seed Data</h3>
+        </td>
+        <td align="right">
+            <form method="post">
+                <h3>
+                    <button type="submit" asp-action="CreateSeedData" class="btn btn-sm btn-success">
+                        Seed Database
+                    </button>
+                    <button asp-action="ClearData" class="btn btn-sm btn-danger">
+                        Clear Database
+                    </button>
+                </h3>
+            </form>
+        </td>
+    </tr>
+    <tr class="p-2 text-left table-borderless">
+        <td colspan="2">
+            <div>
+                @Html.Partial("GetPages", Model)
+            </div>
+        </td>
+    </tr>
+</table>
 
 <table class="table table-sm table-bordered">
     <tbody>

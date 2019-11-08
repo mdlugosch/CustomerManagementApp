@@ -33,17 +33,26 @@ namespace CustomerManagementApp.Controllers
          * Button des jeweiligen Vertrages erreichbar sind.
          */
         [HttpPost]
-        public IActionResult ServiceDetails(DateTime Startdate, string CompanyName, long ContractId)
+        public IActionResult ServiceDetails(DateTime Startdate, string CompanyName, long ContractId, QueryOptions options)
         {
-            ViewBag.Startdate = Startdate;
-            ViewBag.CompanyName = CompanyName;
-            ViewBag.ContractId = ContractId;
+            /*
+             * Sollten die Parameter Startdate, CompanyName oder ContractId leer übertragen werden wird versucht
+             * die Daten aus der temporären TempCompanyData Instanz zu holen. Die Daten werden in den ServiceDetails
+             * zur Identifikationsanzeige benötigt.
+             */
+            long cId = ContractId == 0 ? TempCompanyData.ContractId : ContractId;
+            string cName = String.IsNullOrEmpty(CompanyName) ? TempCompanyData.CompanyName : CompanyName;
+            DateTime? sDate = (Startdate == DateTime.MinValue) ? TempCompanyData.Startdate : Startdate;
 
-            TempCompanyData.Startdate = Startdate;
-            TempCompanyData.CompanyName = CompanyName;
-            TempCompanyData.ContractId = ContractId;
+            ViewBag.Startdate = sDate;
+            ViewBag.CompanyName = cName;
+            ViewBag.ContractId = cId;
 
-            return View(repository.GetAllServicesFromContract(ContractId));
+            TempCompanyData.Startdate = sDate;
+            TempCompanyData.CompanyName = cName;
+            TempCompanyData.ContractId = cId;
+
+            return View(repository.GetAllServicesFromContract(cId, options));
         }
         #endregion
 
@@ -191,7 +200,7 @@ namespace CustomerManagementApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateService(Service service, Service original)
+        public IActionResult UpdateService(Service service, Service original, QueryOptions options)
         {
             ViewBag.Startdate = TempCompanyData.Startdate;
             ViewBag.CompanyName = TempCompanyData.CompanyName;
@@ -211,7 +220,7 @@ namespace CustomerManagementApp.Controllers
                 {
                     repository.UpdateService(service, original);
                 }
-                return View("ServiceDetails", repository.GetAllServicesFromContract(TempCompanyData.ContractId));
+                return View("ServiceDetails", repository.GetAllServicesFromContract(TempCompanyData.ContractId, options));
             }
             return View("EditService", original);
         }
@@ -294,18 +303,26 @@ namespace CustomerManagementApp.Controllers
 
         /*
          * Da Dienstleistungen keine Unterelemente haben müssen die Dienstleistungen nur als gelöscht markiert werden.
+         * Hinweis:
+         * Sollten die Parameter Startdate, CompanyName oder ContractId leer übertragen werden wird versucht
+         * die Daten aus der temporären TempCompanyData Instanz zu holen. Die Daten werden in den ServiceDetails
+         * zur Identifikationsanzeige benötigt.
          */
         [HttpPost]
-        public IActionResult SoftDeleteService(long ContractId,DateTime Startdate,String CompanyName, long ServiceId)
+        public IActionResult SoftDeleteService(long ContractId,DateTime Startdate,String CompanyName, long ServiceId, QueryOptions options)
         {
-            ViewBag.ContractId = ContractId;
-            ViewBag.Startdate = Startdate;
-            ViewBag.CompanyName = CompanyName;
+            long cId = ContractId == 0 ? TempCompanyData.ContractId : ContractId;
+            string cName = String.IsNullOrEmpty(CompanyName) ? TempCompanyData.CompanyName : CompanyName;
+            DateTime? sDate = (Startdate == DateTime.MinValue) ? TempCompanyData.Startdate : Startdate;
+
+            ViewBag.ContractId = cId;
+            ViewBag.Startdate = sDate;
+            ViewBag.CompanyName = cName;
 
             repository.GetServiceById(ServiceId).SoftDeleted = true;
             repository.UpdateData();
-            
-            return View("ServiceDetails", repository.GetAllServicesFromContract(ContractId));
+                                       
+            return View("ServiceDetails", repository.GetAllServicesFromContract(ContractId, options));
         }
         #endregion
 
@@ -368,12 +385,12 @@ namespace CustomerManagementApp.Controllers
          * der ServiceDetails darstellen zu können wird auch hier TempCompanyData genutzt.
          */
         [HttpPost]
-        public IActionResult BackToServiceDetails()
+        public IActionResult BackToServiceDetails(QueryOptions options)
         {
             ViewBag.Startdate = TempCompanyData.Startdate;
             ViewBag.CompanyName = TempCompanyData.CompanyName;
 
-            return View("ServiceDetails", repository.GetAllServicesFromContract(TempCompanyData.ContractId));
+            return View("ServiceDetails", repository.GetAllServicesFromContract(TempCompanyData.ContractId, options));
         }
 
         public bool ParseStringToDecimal(string strVal,out decimal dval)
