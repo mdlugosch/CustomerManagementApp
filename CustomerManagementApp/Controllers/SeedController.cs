@@ -1,5 +1,6 @@
 ﻿using CustomerManagementApp.Models;
 using CustomerManagementApp.Models.Pages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace CustomerManagementApp.Controllers
 {
+    [Authorize]
     public class SeedController : Controller
     {
         private IDataRepository repository;

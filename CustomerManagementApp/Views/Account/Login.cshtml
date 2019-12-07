@@ -1,0 +1,18 @@
+﻿@model LoginModel
+
+<div class="bg-primary m-1 p-1 text-white"><h4>Log In</h4></div>
+
+<div class="text-danger" asp-validation-summary="All"></div>
+
+<form asp-action="Login" method="post">
+    <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+    <div class="form-group">
+        <lable asp-for="Email"></lable>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <lable asp-for="Password"></lable>
+        <input asp-for="Password" class="form-control" />
+    </div>
+    <button class="btn btn-primary" type="submit">Login</button>
+</form>

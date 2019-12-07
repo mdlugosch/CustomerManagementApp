@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Globalization;
 using CustomerManagementApp.Models.Pages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CustomerManagementApp.Controllers
 {
@@ -232,6 +233,7 @@ namespace CustomerManagementApp.Controllers
          * Die aufgeführten Löschmethoden übergeben ein Objekt an das Repository
          * wo diese dann permanent aus der Datenbank entfernt werden.
          */
+        [Authorize]
         public IActionResult DeleteView()
         {
             DeleteList deleteList = repository.CreateDeleteList();
