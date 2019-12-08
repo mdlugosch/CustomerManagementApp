@@ -13,7 +13,18 @@
                 <a asp-controller="Home" asp-action="Index" class="@GetClassForButton("Home")">Übersicht</a>
                 <a asp-controller="Home" asp-action="DeleteView" class="@GetClassForButton("Home")">Papierkorb</a>
                 <a asp-controller="Seed" asp-action="Index" class="@GetClassForButton("Seed")">Daten generieren</a>
-            </div>
+                <hr size="30">
+                @if (User?.Identity?.IsAuthenticated ?? false)
+                {
+                            <label>Angemeldet als:</label><br />
+                            <label>@User?.Identity?.Name</label><br />
+                        <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Abmelden</a>
+                        }
+                        else
+                        {
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Anmelden</a>
+                        }
+                </div>
             <div class="col">
                 @RenderBody()
             </div>

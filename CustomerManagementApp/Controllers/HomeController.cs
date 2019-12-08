@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Globalization;
 using CustomerManagementApp.Models.Pages;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CustomerManagementApp.Controllers
 {
@@ -17,6 +18,9 @@ namespace CustomerManagementApp.Controllers
     {
         private IDataRepository repository;
         TempCompanyData TempCompanyData = TempCompanyData.getInstance();
+
+        private UserManager<AppUser> userManager;
+        private Task<AppUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
 
         public HomeController(IDataRepository repo)
         {

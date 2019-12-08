@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CustomerManagementApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class SeedController : Controller
     {
         private IDataRepository repository;
