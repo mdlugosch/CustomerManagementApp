@@ -12,19 +12,22 @@
             <div class="col-2">
                 <a asp-controller="Home" asp-action="Index" class="@GetClassForButton("Home")">Übersicht</a>
                 <a asp-controller="Home" asp-action="DeleteView" class="@GetClassForButton("Home")">Papierkorb</a>
+                <hr size="30">
                 <a asp-controller="Seed" asp-action="Index" class="@GetClassForButton("Seed")">Daten generieren</a>
+                <a asp-controller="Admin" asp-action="Index" class="@GetClassForButton("Admin")">Konten verwalten</a>
+                <a asp-controller="RoleAdmin" asp-action="Index" class="@GetClassForButton("RoleAdmin")">Konten verwalten</a>
                 <hr size="30">
                 @if (User?.Identity?.IsAuthenticated ?? false)
                 {
-                            <label>Angemeldet als:</label><br />
-                            <label>@User?.Identity?.Name</label><br />
-                        <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Abmelden</a>
-                        }
-                        else
-                        {
-                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Anmelden</a>
-                        }
-                </div>
+                    <label>Angemeldet als:</label><br />
+                    <label>@User?.Identity?.Name</label><br />
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Abmelden</a>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Anmelden</a>
+                }
+            </div>
             <div class="col">
                 @RenderBody()
             </div>

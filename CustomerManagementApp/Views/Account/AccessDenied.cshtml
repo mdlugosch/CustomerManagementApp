@@ -1,3 +1,21 @@
-﻿<div class="bg-danger m-1 p-1 text-white"><h4>Zugang verweigert</h4></div>
+﻿@*Schlägt die Authentifizierung fehl, wird der Anwender zurück zu Home/Index geleitet.
+Home/Index benötigt allerdings eine Instanz vom Typ QueryOptions. Dabei handelt es sich
+um eine Instanz in der Einstellungen für die Pageination der Seite hinterlegt sind.
+Wird Home/Index über einen Link direkt angesprochen findet allerdings keine Dependency Injection
+statt und der Aufruf über den Link schlägt fehl. Aus diesem Grund wird in der Razorseite eine
+Instanz von QueryOptions erstellt die im Link mit "asp-route-id" übergeben wird.*@
 
-<a asp-controller="Index" asp-action="Home" class="btn btn-primary">OK</a>
+@{
+    var options = new CustomerManagementApp.Models.Pages.QueryOptions();
+}
+
+
+<table>
+    <tr class="bg-danger m-1 p-1 text-white">
+        <td width="30%" align="center" style="padding: 20px;"><h4>Zugang verweigert</h4></td>
+        <td width="70%" align="left">
+            <a asp-controller="Home" asp-action="Index" asp-route-id="@options" class="btn btn-primary">Zurück zur Übersicht</a>
+        </td>
+        <td style="width: 100%;"></td>
+    </tr>
+</table>
