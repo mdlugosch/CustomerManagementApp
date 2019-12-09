@@ -14,7 +14,6 @@ namespace CustomerManagementApp.Controllers
      * umgeleitet damit er sich authorisieren kann. Bei erfolgreicher überprüfung erhält
      * er zugang zur entsprechenden Seite.
      */
-    [Authorize]
     public class AccountController : Controller
     {
         private UserManager<AppUser> userManager;

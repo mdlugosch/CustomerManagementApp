@@ -237,7 +237,7 @@ namespace CustomerManagementApp.Controllers
          * Die aufgeführten Löschmethoden übergeben ein Objekt an das Repository
          * wo diese dann permanent aus der Datenbank entfernt werden.
          */
-        [Authorize]
+        [Authorize(Roles = "Users")]
         public IActionResult DeleteView()
         {
             DeleteList deleteList = repository.CreateDeleteList();

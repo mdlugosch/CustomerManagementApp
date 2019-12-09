@@ -1,4 +1,5 @@
 ﻿using CustomerManagementApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,6 +16,7 @@ namespace CustomerManagementApp.Controllers
      * bzw. Benutzergruppen verwaltet werden können. Hierzu dient der
      * RoleAdminController.
      */
+    [Authorize(Roles = "Admins")]
     public class RoleAdminController : Controller
     {
         private RoleManager<IdentityRole> roleManager;
